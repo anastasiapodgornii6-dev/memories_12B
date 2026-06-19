@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Albumul Nostru</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  overflow-x: hidden;
+
+  background: linear-gradient(-45deg, #ff4d6d, #845ef7, #339af0, #22b8cf);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+}
+
+@keyframes gradient {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* ===== CHAT ===== */
+.chat {
+  padding: 20px;
+  padding-bottom: 90px;
+}
+
+.message {
+  display: flex;
+  margin: 15px 0;
+}
+
+.left { justify-content: flex-start; }
+.right { justify-content: flex-end; }
+
+.bubble {
+  max-width: 75%;
+  padding: 10px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+/* TEXT */
+.text {
+  background: rgba(0,0,0,0.4);
+}
+
+/* PHOTO */
+.photo {
+  background: rgba(255,255,255,0.2);
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.photo img {
+  width: 100%;
+  display: block;
+}
+
+/* BUBBLE corners like chat */
+.left .bubble { border-bottom-left-radius: 4px; }
+.right .bubble { border-bottom-right-radius: 4px; }
+
+/* ===== GALLERY ===== */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+}
+
+.gallery img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* ===== LIGHTBOX ===== */
+#viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#viewer img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+
+/* ===== INPUT BAR ===== */
+.input-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+}
+
+.input-bar input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+}
+
+.input-bar button {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: none;
+  background: white;
+  color: black;
+}
+
+/* ===== messages ===== */
+.new-msg {
+  max-width: 75%;
+  margin: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  padding: 12px 16px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.right-info {
+  font-size: 12px;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+<div class="top-bar">
+
+  <div>
+    <div class="title">📚 Albumul clasei</div>
+    <div class="subtitle">amintiri • 2023–2026</div>
+  </div>
+
+  <div class="right-info">
+    🟢 memories • 12
+  </div>
+
+</div>
+<!-- ===== CHAT ===== -->
+<div class="chat">
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img20.jpg" onclick="openViewer(this.src)">
+     
+    </div>
+  </div>
+<div class="message right">
+    <div class="bubble text">
+      O clasă goală pare doar… goală.
+
+    </div>
+  </div>
+  <div class="message right">
+    <div class="bubble text">
+    Dar noi știm adevărul:
+    nu băncile fac clasa.
+    O fac oamenii.
+    </div>
+  </div>
+  <div class="message right">
+    <div class="bubble text">
+      
+    Și poveștile lor… abia încep.
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img1.jpg" onclick="openViewer(this.src)">
+      <img src="img2.jpg" onclick="openViewer(this.src)">
+     
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+     Ziua Profesorului, clasa a 10-a:
+    noi – eleganți, maturi, cu planuri de viitor…
+    și în spate: Smeshariki 🤝
+
+
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+
+Echilibrul perfect între „adulți responsabili” și „nu chiar”.
+
+    </div>
+  </div>
+  
+
+  <!-- GALLERY -->
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img4.jpg" onclick="openViewer(this.src)">
+      <img src="img5.jpg" onclick="openViewer(this.src)">
+
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Engleză, experiențe și… toată clasa împreună 💙
+
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img6.jpg" onclick="openViewer(this.src)">
+      <img src="img7.jpg" onclick="openViewer(this.src)">
+     
+    </div>
+  </div>
+
+
+  <div class="message right">
+    <div class="bubble text">
+      Teatrul a fost locul unde, pentru câteva ore, am fost mai liniștiți decât de obicei.
+    </div>
+  </div>
+  <div class="message right">
+    <div class="bubble text">
+
+Sau cel puțin așa părea 😏
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img8.jpg" onclick="openViewer(this.src)">
+      <img src="img9.jpg" onclick="openViewer(this.src)">
+      <img src="img10.jpg" onclick="openViewer(this.src)">
+      <img src="img11.jpg" onclick="openViewer(this.src)">
+
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Secret Santa nivel: clasa noastră 🤝
+<br><br>
+Cadouri? Da.
+Dar și dovezi că am fost aici... amprente incluse 😌
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img12.jpg" onclick="openViewer(this.src)">
+
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Nu toți, dar suficienți cât să se simtă ca „noi”.
+Lumini, seară și un pic de magie de iarnă ✨
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img13.jpg" onclick="openViewer(this.src)">
+
+    </div>
+  </div>
+  
+  <div class="message right">
+    <div class="bubble text">
+      Dress code: verde ✔️<br>
+Prezență: activă ✔️
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img14.jpg" onclick="openViewer(this.src)">
+      <img src="img15.jpg" onclick="openViewer(this.src)">
+
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Educație fizică:
+      băieții gata de NBA 🏀
+      restul ca suport moral (și comentarii)
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img16.jpg" onclick="openViewer(this.src)">
+      <img src="img17.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Proiect despre sănătate.
+Am învățat, am discutat… și, probabil, am uitat jumătate 😅
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img18.jpg" onclick="openViewer(this.src)">
+      <img src="img19.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Quiz, întrebări, răspunsuri…
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img21.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+     Pregătiri serioase… sau aproape 😏
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img24.jpg" onclick="openViewer(this.src)">
+      <img src="img25.jpg" onclick="openViewer(this.src)">
+      <img src="img26.jpg" onclick="openViewer(this.src)">
+      <img src="img27.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Proiecte, activități… și partea cea mai importantă: mâncarea 🍕
+</div>
+  </div>
+  <div class="message right">
+    <div class="bubble text">
+Să fim sinceri... asta motiva pe toată lumea.
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img28.jpg" onclick="openViewer(this.src)">
+      
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Din nou la teatru.😌
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo ">
+
+      <img src="img29.jpg" onclick="openViewer(this.src)">
+      
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      „Faceți o poză să văd cine e la lecție.”
+
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+  
+      Toţi sunt. "Fără întârzieri".😝
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img31.jpg" onclick="openViewer(this.src)">
+      <img src="img32.jpg" onclick="openViewer(this.src)">
+      
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Unii dintre noi… în Parlament.😎
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img33.jpg" onclick="openViewer(this.src)">
+      <img src="img34.jpg" onclick="openViewer(this.src)">
+      <img src="img35.jpg" onclick="openViewer(this.src)">
+      <img src="img36.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+     Poate nu am salvat lumea atunci…
+dar am început de undeva.
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo ">
+
+      <img src="img38.jpg" onclick="openViewer(this.src)">
+      
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Îmbrăcați în alb și negru, serioși… aproape de nerecunoscut 😏
+
+(Uneori chiar păream o clasă model.)
+
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img39.jpg" onclick="openViewer(this.src)">
+      <img src="img40.jpg" onclick="openViewer(this.src)">
+      <img src="img41.jpg" onclick="openViewer(this.src)">
+      <img src="img43.jpg" onclick="openViewer(this.src)">
+      <img src="img44.jpg" onclick="openViewer(this.src)">
+      <img src="img45.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Am plantat flori.
+<br>
+Responsabilitate? ✔️<br>
+Grijă? ✔️<br>
+Supraviețuirea plantelor… discutabilă 😅
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img42.jpg" onclick="openViewer(this.src)">
+      
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      America House: ediția „cei mai activi”
+
+    </div>
+  </div>
+
+<div class="message right">
+    <div class="bubble text">
+    
+Motivație reală: „+1 la notă” 😏
+<br>
+Funcționa de fiecare dată.
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img47.jpg" onclick="openViewer(this.src)">
+      <img src="img49.jpg" onclick="openViewer(this.src)">
+      <img src="img50.jpg" onclick="openViewer(this.src)">
+      <img src="img65.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Oricât de haotici am fost…
+
+Cadourile nu lipseau niciodată 🎁
+<br>
+Priorități corecte.🤭
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img51.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      După mesajul din grup:<br>
+    „VENIȚI ACUM!!!”
+
+    </div>
+  </div>
+  <div class="message right">
+    <div class="bubble text">
+     
+Noi: apărăm onoarea clasei 🤝
+<br>„Suntem aici, nu am dispărut.”
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img52.jpg" onclick="openViewer(this.src)">
+      <img src="img53.jpg" onclick="openViewer(this.src)">
+      <img src="img54.jpg" onclick="openViewer(this.src)">
+      <img src="img55.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      A doua zi: 
+Noi, dansând cu șosete pe mâini…
+
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img56.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+     Încă un proiect, încă o explicație…
+<br>
+Ascultam?
+<br>
+Uneori.😁
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img57.jpg" onclick="openViewer(this.src)">
+      
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Costume naționale, dansuri și… o altă versiune a noastră...
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img58.jpg" onclick="openViewer(this.src)">
+      <img src="img59.jpg" onclick="openViewer(this.src)">
+      <img src="img60.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Tur prin teatru:
+povești, culise și… pălării peste pălării 🎩
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img61.jpg" onclick="openViewer(this.src)">
+      <img src="img62.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Dimineața, sport și energie…😴
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img63.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Ultima Zi a Profesorului împreună.
+
+
+
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+     
+Poate nu mai ținem minte toate detaliile…
+dar știm sigur:<br>
+a fost despre recunoștință și „încă puțin împreună”.😔
+
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img64.jpg" onclick="openViewer(this.src)">
+      <img src="img66.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Universități, alegeri, drumuri diferite 🎓
+    </div>
+  </div>
+  
+  <div class="message left">
+    <div class="bubble photo">
+
+      <img src="img67.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Excursie în România. Drum lung, oboseală, râsete…
+    </div>
+  </div>
+  
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img69.jpg" onclick="openViewer(this.src)">
+      <img src="img70.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Cadre perfecte, lumini, zâmbete.
+    </div>
+  </div>
+
+  <div class="message left">
+    <div class="bubble photo gallery">
+
+      <img src="img71.jpg" onclick="openViewer(this.src)">
+      <img src="img72.jpg" onclick="openViewer(this.src)">
+      <img src="img73.jpg" onclick="openViewer(this.src)">
+      <img src="img74.jpg" onclick="openViewer(this.src)">
+      <img src="img75.jpg" onclick="openViewer(this.src)">
+      <img src="img76.jpg" onclick="openViewer(this.src)">
+      <img src="img77.jpg" onclick="openViewer(this.src)">
+      <img src="img78.jpg" onclick="openViewer(this.src)">
+      
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+      Ultimul sunet și… noi încă aici.🎓
+
+    </div>
+  </div>
+
+<div class="message right">
+    <div class="bubble text">
+ Cu amintiri, haos și momente care nu încap într-un album.
+
+    </div>
+  </div>
+
+  <div class="message right">
+    <div class="bubble text">
+Pentru mesajul secret…
+introdu codul 😉
+
+    </div>
+  </div>
+
+
+
+
+  <div id="chatEnd"></div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div id="viewer" onclick="closeViewer()">
+  <img id="viewerImg">
+</div>
+
+<!-- INPUT -->
+<div class="input-bar">
+  <input id="userText" placeholder="scrie un mesaj...">
+ <button onclick="unlock()">Send</button>
+</div>
+
+<!-- INPUT -->
+<div class="input-bar">
+  <input id="codeInput" placeholder="introdu codul...">
+  <button onclick="unlock()">Send</button>
+</div>  
+<script>
+
+/* open image */
+function openViewer(src) {
+  document.getElementById("viewer").style.display = "flex";
+  document.getElementById("viewerImg").src = src;
+}
+
+function closeViewer() {
+  document.getElementById("viewer").style.display = "none";
+}
+
+
+
+const data = {
+  "4821": "Nu vei fi niciodată 100% pregătit(ă).",
+    "9056": "Începutul e partea pe care o eviți cel mai mult.",
+    "1134": "Dacă te tot întorci la un gând, probabil contează.",
+    "7781": "Unele șanse nu se repetă în aceeași formă.",
+    "2468": "Dacă simți că trebuie să faci ceva, probabil ai dreptate.",
+    "3902": "Nu toate lucrurile bune se lasă așteptate.",
+    "6610": "Există momente care trec o singură dată.",
+    "8455": "„Mai târziu” devine uneori „niciodată”.",
+    "5209": "Curajul apare după ce începi, nu înainte.",
+    "7316": "Uneori trebuie să alegi fără garanții.",
+    "9081": "Nu toate ezitările sunt sigure.",
+    "1177": "Dacă te oprești, rămâi în același loc.",
+    "6633": "Mișcarea schimbă tot, chiar dacă pare mică.",
+    "4408": "Nu toți oamenii rămân, dar unii contează chiar și puțin timp.",
+    "9912": "Ce simți tu nu e mereu ce vede celălalt.",
+    "8449": "Oamenii arată mai puțin decât simt.",
+    "4522": "Nu toate conexiunile pot fi explicate.",
+    "2586": "Unele relații nu se termină, doar se schimbă.",
+    "8546": "Nu toată lumea îți va arăta importanța ta.",
+    "6754": "Direcția contează mai mult decât viteza.",
+    "5575": "Oamenii revin în gânduri, nu neapărat în viață.",
+    "7855": "Nu ești aceeași persoană care erai acum un an.",
+    "0245": "Te subestimezi mai des decât ar trebui.",
+    "0086": "Ai mai mult control decât crezi.",
+    "5410": "Te complici uneori inutil.",
+    "8655": "Te analizezi prea dur.",
+    "5875": "Ești deja „în proces”, chiar dacă nu simți.",
+    "9869": "Gândurile tale nu sunt întotdeauna realitatea.",
+    "3311": "Nu tot ce e neclar este negativ.",
+    "7740": "Uneori trebuie doar să continui.",
+    "9901": "Nu toate răspunsurile sunt urgente.",
+    "1029": "Ai trecut deja peste lucruri mai grele decât crezi.",
+    "6602": "Schimbarea apare fără să o anunțe.",
+    "2188": "Nu tot ce pierzi era pentru tine.",
+    "4433": "Ai deja începutul a ceva important în tine.",
+    "5190": "Nu ai nevoie de validare ca să mergi mai departe.",
+    "7722": "Unele decizii se simt înainte să fie înțelese.",
+    "8401": "Nu tot ce pare greu chiar te oprește.",
+    "3944": "Ești mai rezistent(ă) decât crezi.",
+    "6509": "Nu trebuie să înțelegi tot acum.",
+    "1180": "Uneori liniștea înseamnă răspuns.",
+    "9033": "Nu totul trebuie controlat.",
+    "4820": "Unele lucruri se așază în timp.",
+    "7007": "Ai mai multă claritate decât îți dai seama.",
+    "3149": "Nu ești în urmă, ești în proces.",
+    "6001": "Ce e pentru tine nu se pierde ușor."
+};
+
+function unlock() {
+  const input = document.getElementById("codeInput");
+  const code = input.value.trim();
+
+  const chat = document.querySelector(".chat");
+
+  // 1) сообщение пользователя (код) — справа
+  const userMsg = document.createElement("div");
+  userMsg.className = "message right";
+
+  userMsg.innerHTML = `
+    <div class="bubble text">
+      ${code}
+    </div>
+  `;
+
+  chat.appendChild(userMsg);
+
+  // 2) ответ системы — слева
+  const botMsg = document.createElement("div");
+
+  let text = data[code] || "Cod greșit 😅";
+
+  botMsg.className = "message left";
+
+  botMsg.innerHTML = `
+    <div class="bubble text">
+      ${text}
+    </div>
+  `;
+
+  chat.appendChild(botMsg);
+
+  // очистка input
+  input.value = "";
+
+  // автоскрол вниз (очень важно на телефоне)
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+}
+</script>
+
+
+</body>
+</html>
